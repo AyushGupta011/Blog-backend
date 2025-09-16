@@ -28,8 +28,9 @@ console.log("📩 Incoming register request:", req.body);
         await newUser.save();
         const token = jwt.sign({ id: newUser._id }, JWT_SECRET, { expiresIn: "1d" });
         res.cookie("token", token, { httpOnly: true ,
-             secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+               secure: true, // must be true on HTTPS in prod
+  sameSite: "none", // for cross-site cookies (Vercel ↔ Render)
+  maxAge: 24*60*60*1000
         });
         res.status(201).json({ message: "User registered successfully",user: {
     _id: newUser._id,
@@ -54,8 +55,9 @@ export const login = async (req, res) => {
         }
         const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1d" });
         res.cookie("token", token, { httpOnly: true,
-             secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+              secure: true, // must be true on HTTPS in prod
+  sameSite: "none", // for cross-site cookies (Vercel ↔ Render)
+  maxAge: 24*60*60*1000
          });
         res.status(200).json({ message: "Login successful",user: {
     _id: user._id,
