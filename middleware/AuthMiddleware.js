@@ -10,6 +10,8 @@ if(!JWT_SECRET){
 }
 export const authenticate = async (req, res, next) => {
     console.log("Incoming cookies:", req.cookies);
+//      const authHeader = req.headers["authorization"];
+//   const token = authHeader && authHeader.split(" ")[1];
     const token = req.cookies.token;
     if (!token) {
         return res.status(401).json({ message: "Unauthorized" });
