@@ -9,6 +9,7 @@ if(!JWT_SECRET){
     throw new Error("JWT_SECRET is not defined in environment variables");
 }
 export const authenticate = async (req, res, next) => {
+    console.log("Incoming cookies:", req.cookies);
     const token = req.cookies.token;
     if (!token) {
         return res.status(401).json({ message: "Unauthorized" });
